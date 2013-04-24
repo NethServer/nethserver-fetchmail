@@ -25,6 +25,7 @@ perl createlinks
 rm -rf $RPM_BUILD_ROOT
 (cd root ; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
 /sbin/e-smith/genfilelist --file '/usr/local/bin/fetchmail_wrapper' 'attr(0755,root,root)'  $RPM_BUILD_ROOT > %{name}-%{version}-filelist
+echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 
 %clean 
 rm -rf $RPM_BUILD_ROOT

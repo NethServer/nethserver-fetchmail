@@ -1,0 +1,95 @@
+#!/bin/bash
+#
+# fetchmail        Starts fetchmail as daemon.
+#
+#
+# chkconfig: 2345 99 10
+
+# Source function library.
+. /etc/init.d/functions
+
+RETVAL=0
+
+start() {
+	[ -x /usr/bin/fetchmail ] || exit 5
+
+	# Source config
+	if [ -f /etc/sysconfig/fetchmail ] ; then
+		. /etc/sysconfig/fetchmail
+	else
+		USER="admin"
+		SSL_OPTIONS=""
+		AUTH_TYPE="password"
+		LOG_FILE="/var/log/fetchmail.log"
+		CONFIG_FILE="/home/e-smith/fetchmailrc"
+		INTERVAL="1"
+		EXTRA_OPTIONS="--fastuidl 1"
+	fi
+
+ 	echo -n $"Starting fetchmail: "
+
+	daemon --user $USER /usr/bin/fetchmail $SSL_OPTIONS --auth $AUTH_TYPE -L $LOG_FILE -f $CONFIG_FILE -d $INTERVAL $EXTRA_OPTIONS
+
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/fetchmail
+	return $RETVAL
+}	
+stop() {
+	echo -n $"Shutting down fetchmail: "
+	killproc fetchmail
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/fetchmail
+	return $RETVAL
+}
+rhstatus() {
+	status fetchmail
+}
+restart() {
+	stop
+	start
+}
+case "$1" in
+  start)
+	# prepare qmail
+	[ ! -e /var/service/qpsmtpd/config/peers/127.0.0.200 ]  && ln -s /var/service/qpsmtpd/config/peers/200 /var/service/qpsmtpd/config/peers/127.0.0.200;
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  status)
+  	rhstatus
+	;;
+  restart)
+  	restart
+	;;
+  condrestart)
+	[ -f /var/lock/subsys/fetchmail ] && restart || :
+	;;
+  sigusr1)
+        echo -n $"Waking up fetchmail: "
+	killproc fetchmail -10
+        RETVAL=$?
+        echo
+        exit $RETVAL
+	;;
+  adjust)
+	if [ `/sbin/e-smith/config getprop fetchmail status` == 'enabled' ]; then
+  		if [ -f /var/lock/subsys/fetchmail ]; then
+			restart || :
+		else
+			start || :
+		fi
+	else
+		[ -f /var/lock/subsys/fetchmail ] && stop || :
+	fi
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart|condrestart|adjust|sigusr1}"
+	exit 2
+esac
+
+exit $?
+

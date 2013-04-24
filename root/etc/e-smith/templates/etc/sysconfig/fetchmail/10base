@@ -1,0 +1,22 @@
+{
+my $user = $fetchmail{'user'} || 'admin';
+my $ssl = $fetchmail{'ssl'} || '';
+my $auth_type = $fetchmail{'auth_type'} || 'password';
+my $log_file = $fetchmail{'log_file'} || '/var/log/fetchmail.log';
+my $conf_file = $fetchmail{'conf_file'} || '/home/e-smith/fetchmailrc';
+my $interval =  $fetchmail{'external_freq'} || '5'; 
+$interval = $interval * 60; # minutes to seconds
+my $extra_options = $fetchmail{'extra_options'} || '--fastuidl 1';
+
+
+$OUT.=<<HERE
+USER="$user"
+SSL_OPTIONS="$ssl"
+AUTH_TYPE="$auth_type"
+LOG_FILE="$log_file"
+CONFIG_FILE="$conf_file"
+INTERVAL="$interval"
+EXTRA_OPTIONS="$extra_options"
+HERE
+
+}

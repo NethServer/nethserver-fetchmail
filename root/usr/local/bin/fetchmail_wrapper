@@ -1,0 +1,6 @@
+#!/bin/bash
+
+[ ! -e /var/service/qpsmtpd/config/peers/127.0.0.200 ]  && ln -s /var/service/qpsmtpd/config/peers/local /var/service/qpsmtpd/config/peers/127.0.0.200;
+
+su -c "/etc/fetchmymail --silent" -s /bin/sh admin
+

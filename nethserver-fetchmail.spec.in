@@ -1,0 +1,45 @@
+Name:		nethserver-fetchmail
+Version:        @@VERSION@@
+Release:        @@RELEASE@@
+Summary:	NethServer fetchmail
+Group:		Networking/Daemons
+License:	GPLv2
+URL:		http://www.nethesis.it
+Source0:	%{name}-%{version}.gz
+BuildArch: 	noarch
+
+BuildRequires:	nethserver-devtools
+Requires:	fetchmail
+
+%description
+Fetchmail add-on for NethServer
+
+
+%prep
+%setup
+
+%build
+perl createlinks
+
+%install
+rm -rf $RPM_BUILD_ROOT
+(cd root ; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
+/sbin/e-smith/genfilelist --file '/usr/local/bin/fetchmail_wrapper' 'attr(0755,root,root)'  $RPM_BUILD_ROOT > %{name}-%{version}-filelist
+
+%clean 
+rm -rf $RPM_BUILD_ROOT
+
+%pre
+%preun
+%post
+if [ ! -f /var/log/fetchmail.log ]; then
+	touch /var/log/fetchmail.log
+fi
+chown admin:admin /var/log/fetchmail.log &>/dev/null || :
+
+%postun
+
+%files -f %{name}-%{version}-filelist
+%defattr(-,root,root)
+
+%changelog

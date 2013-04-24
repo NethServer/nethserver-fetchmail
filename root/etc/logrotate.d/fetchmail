@@ -1,0 +1,12 @@
+/var/log/fetchmail.log {
+  weekly
+  create 0640 admin admin
+  missingok
+  notifempty
+  delaycompress
+  sharedscripts
+  postrotate
+    /sbin/e-smith/service fetchmail restart &> /dev/null || true
+  endscript
+}
+

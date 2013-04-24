@@ -1,12 +1,12 @@
 {
-my $user = $fetchmail{'user'} || 'admin';
+my $user = 'fetchmail';
 my $ssl = $fetchmail{'ssl'} || '';
-my $auth_type = $fetchmail{'auth_type'} || 'password';
-my $log_file = $fetchmail{'log_file'} || '/var/log/fetchmail.log';
-my $conf_file = $fetchmail{'conf_file'} || '/home/e-smith/fetchmailrc';
-my $interval =  $fetchmail{'external_freq'} || '5'; 
+my $auth_type = $fetchmail{'authType'} || 'password';
+my $log_file = $fetchmail{'logFile'} || '/var/log/fetchmail.log';
+my $conf_file = $fetchmail{'config'} || '/home/fetchmail/fetchmailrc';
+my $interval =  $fetchmail{'externalFreq'} || '5'; 
 $interval = $interval * 60; # minutes to seconds
-my $extra_options = $fetchmail{'extra_options'} || '--fastuidl 1';
+my $extra_options = $fetchmail{'extraOptions'} || '--fastuidl 1';
 
 
 $OUT.=<<HERE

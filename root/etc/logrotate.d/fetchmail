@@ -1,6 +1,6 @@
 /var/log/fetchmail.log {
   weekly
-  create 0640 admin admin
+  create 0640 fetchmail admin
   missingok
   notifempty
   delaycompress

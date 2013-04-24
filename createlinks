@@ -28,7 +28,7 @@ use esmith::Build::CreateLinks  qw(:all);
 $event = "nethserver-fetchmail-update";
 
 templates2events("/etc/sysconfig/fetchmail", $event);
-templates2events("/home/admin/fetchmailrc", $event);
+templates2events("/home/fetchmail/fetchmailrc", $event);
 event_services($event, 'fetchmail' => 'restart');
 event_actions($event, 'initialize-default-databases' => '00');
 
@@ -39,6 +39,5 @@ event_actions($event, 'initialize-default-databases' => '00');
 
 $event = "nethserver-fetchmail-save";
 
-templates2events("/home/admin/fetchmailrc", $event);
+templates2events("/home/fetchmail/fetchmailrc", $event);
 event_services($event, 'fetchmail' => 'restart');
-

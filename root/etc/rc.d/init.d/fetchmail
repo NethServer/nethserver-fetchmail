@@ -17,7 +17,7 @@ start() {
 	if [ -f /etc/sysconfig/fetchmail ] ; then
 		. /etc/sysconfig/fetchmail
 	else
-		USER="admin"
+		USER="fetchmail"
 		SSL_OPTIONS=""
 		AUTH_TYPE="password"
 		LOG_FILE="/var/log/fetchmail.log"
@@ -52,8 +52,6 @@ restart() {
 }
 case "$1" in
   start)
-	# prepare qmail
-	[ ! -e /var/service/qpsmtpd/config/peers/127.0.0.200 ]  && ln -s /var/service/qpsmtpd/config/peers/200 /var/service/qpsmtpd/config/peers/127.0.0.200;
   	start
 	;;
   stop)

@@ -5,7 +5,7 @@ Summary:	NethServer fetchmail
 Group:		Networking/Daemons
 License:	GPLv2
 URL:		http://www.nethesis.it
-Source0:	%{name}-%{version}.gz
+Source0:	%{name}-%{version}.tar.gz
 BuildArch: 	noarch
 
 BuildRequires:	nethserver-devtools
@@ -31,12 +31,20 @@ echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 rm -rf $RPM_BUILD_ROOT
 
 %pre
+# Add the "fetchmail" user
+getent group fetchmail >/dev/null || groupadd -r fetchmail
+getent passwd fetchmail >/dev/null || \
+useradd -r -g fetchmail -s /sbin/nologin \
+    -d /home/fetchmail -c "Fetchmail user" -m fetchmail
+exit 0
+
+
 %preun
 %post
 if [ ! -f /var/log/fetchmail.log ]; then
 	touch /var/log/fetchmail.log
 fi
-chown admin:admin /var/log/fetchmail.log &>/dev/null || :
+chown fetchmail:admin /var/log/fetchmail.log &>/dev/null || :
 
 %postun
 

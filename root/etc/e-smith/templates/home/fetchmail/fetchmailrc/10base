@@ -16,18 +16,19 @@
         my $active = db_get_prop(\%fetchmails, $_, "active") || 'YES';
         my $nokeep = db_get_prop(\%fetchmails, $_, "nokeep") || 'YES';
         my $ssl = db_get_prop(\%fetchmails, $_, "ssl") || 'NO';
-        my $popserver = db_get_prop(\%fetchmails, $_, "popserver");
+        my $popserver = db_get_prop(\%fetchmails, $_, "popserver") || next;
         my $username = db_get_prop(\%fetchmails, $_, "username");
         my $password = db_get_prop(\%fetchmails, $_, "password");
         my $account = db_get_prop(\%fetchmails, $_, "account");
+        my $proto = db_get_prop(\%fetchmails, $_, "proto") || 'pop3';
         $KEEP='';
         $SSL=''; if ($ssl eq 'YES') { $SSL='ssl';}
         if ($nokeep eq 'NO') {
                 $KEEP="keep";}
         if ($active eq 'YES') {
-                $OUT.="poll $popserver proto pop3:\n user \"$username\"";
+                $OUT.="poll $popserver proto $proto:\n user \"$username\"";
                 $OUT.=" with pass \"$password\" is \"$account\@$DomainName\" here";
-                $OUT.=" smtphost 127.0.0.200 $KEEP $SSL\n";
+                $OUT.=" smtphost 127.0.0.100 $KEEP $SSL\n";
         }
     }
 }

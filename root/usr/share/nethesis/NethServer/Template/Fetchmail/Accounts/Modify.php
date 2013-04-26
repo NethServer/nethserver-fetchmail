@@ -10,6 +10,7 @@ echo $view->header()->setAttribute('template',$T($headerText));
 
 echo $view->panel()
     ->insert($view->textInput('mail'))
+    ->insert($view->selector('proto'))
     ->insert($view->textInput('popserver'))
     ->insert($view->textInput('username'))
     ->insert($view->textInput('password'))

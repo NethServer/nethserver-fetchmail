@@ -44,12 +44,14 @@ class Modify extends \Nethgui\Controller\Table\Modify
             array('popserver', Validate::HOSTADDRESS, \Nethgui\Controller\Table\Modify::FIELD),
             array('username', Validate::USERNAME, \Nethgui\Controller\Table\Modify::FIELD),
             array('ssl', $ynv, \Nethgui\Controller\Table\Modify::FIELD),
+            array('proto',  $this->createValidator()->memberOf(array('pop3','imap')), \Nethgui\Controller\Table\Modify::FIELD),
         );
 
         $this->setSchema($parameterSchema);
         $this->setDefaultValue('nokeep', 'YES');
         $this->setDefaultValue('active', 'YES');
         $this->setDefaultValue('ssl', 'NO');
+        $this->setDefaultValue('proto', 'pop3');
 
         parent::initialize();
     }
@@ -84,6 +86,7 @@ class Modify extends \Nethgui\Controller\Table\Modify
         $ynds = array(array('YES',$view->translate('YES_label')),array('NO',$view->translate('NO_label')));
         $view['nokeepDatasource'] = $ynds;
         $view['sslDatasource'] = $ynds;
+        $view['protoDatasource'] = array(array('pop3',$view->translate('pop3_label')),array('imap',$view->translate('imap_label')));
  
     }
 

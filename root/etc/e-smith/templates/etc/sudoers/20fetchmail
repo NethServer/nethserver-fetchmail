@@ -1,0 +1,9 @@
+{
+    #
+    # 20fetchmail
+    #
+    push @cmnd_alias_httpd_admin, qw(
+         /usr/libexec/nethserver/fetchmail-wakeup
+    );
+    '';
+}

@@ -29,6 +29,7 @@ $event = "nethserver-fetchmail-update";
 
 templates2events("/etc/sysconfig/fetchmail", $event);
 templates2events("/home/fetchmail/fetchmailrc", $event);
+templates2events("/etc/sudoers", $event);
 event_services($event, 'fetchmail' => 'restart');
 event_actions($event, 'initialize-default-databases' => '00');
 

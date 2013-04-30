@@ -52,3 +52,5 @@ chown fetchmail:admin /var/log/fetchmail.log &>/dev/null || :
 %defattr(-,root,root)
 
 %changelog
+* Tue Apr 30 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.0-1.ns6
+- First release #1745 

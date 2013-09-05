@@ -42,9 +42,10 @@ class Modify extends \Nethgui\Controller\Table\Modify
             array('nokeep', $ynv, \Nethgui\Controller\Table\Modify::FIELD),
             array('password', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
             array('popserver', Validate::HOSTADDRESS, \Nethgui\Controller\Table\Modify::FIELD),
-            array('username', Validate::USERNAME, \Nethgui\Controller\Table\Modify::FIELD),
+            array('username', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
             array('ssl', $ynv, \Nethgui\Controller\Table\Modify::FIELD),
             array('proto',  $this->createValidator()->memberOf(array('pop3','imap')), \Nethgui\Controller\Table\Modify::FIELD),
+            array('active', $ynv, \Nethgui\Controller\Table\Modify::FIELD),
         );
 
         $this->setSchema($parameterSchema);

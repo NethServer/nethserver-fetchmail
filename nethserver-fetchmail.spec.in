@@ -9,6 +9,7 @@ Source0:	%{name}-%{version}.tar.gz
 BuildArch: 	noarch
 
 BuildRequires:	nethserver-devtools
+Requires:	nethserver-mail-server
 Requires:	fetchmail
 
 %description

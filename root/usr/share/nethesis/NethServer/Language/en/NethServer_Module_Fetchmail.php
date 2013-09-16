@@ -15,6 +15,7 @@ $L['disabled_label'] = 'No';
 $L['Disable external mail account'] = 'Disable external mail account';
 $L['Download_label'] = 'Download now';
 $L['Download_Title'] = 'Download';
+$L['download_Header'] = "Notice";
 $L['enable_label'] = 'Enable';
 $L['enabled_label'] = 'Yes';
 $L['Enable external mail account'] = 'Enable external mail account';

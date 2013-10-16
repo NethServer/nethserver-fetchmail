@@ -53,5 +53,9 @@ chown fetchmail:admin /var/log/fetchmail.log &>/dev/null || :
 %defattr(-,root,root)
 
 %changelog
+* Wed Oct 16 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.1-1.ns6
+- Allow email address as username for login  #2183
+- Db defaults: remove Runlevels prop #2067
+
 * Tue Apr 30 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.0-1.ns6
 - First release #1745 

@@ -20,6 +20,7 @@ Fetchmail add-on for NethServer
 %setup
 
 %build
+%{makedocs}
 perl createlinks
 
 %install

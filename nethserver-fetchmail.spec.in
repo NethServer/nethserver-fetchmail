@@ -54,6 +54,9 @@ chown fetchmail:admin /var/log/fetchmail.log &>/dev/null || :
 %defattr(-,root,root)
 
 %changelog
+* Wed Feb 05 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.2-1.ns6
+- Update all inline help documentation - Task #1780 [NethServer]
+
 * Wed Oct 16 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.1-1.ns6
 - Allow email address as username for login  #2183
 - Db defaults: remove Runlevels prop #2067

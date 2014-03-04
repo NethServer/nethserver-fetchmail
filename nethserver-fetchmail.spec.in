@@ -40,16 +40,6 @@ useradd -r -g fetchmail -s /sbin/nologin \
     -d /home/fetchmail -c "Fetchmail user" -m fetchmail
 exit 0
 
-
-%preun
-%post
-if [ ! -f /var/log/fetchmail.log ]; then
-	touch /var/log/fetchmail.log
-fi
-chown fetchmail:admin /var/log/fetchmail.log &>/dev/null || :
-
-%postun
-
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
 

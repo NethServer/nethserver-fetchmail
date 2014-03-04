@@ -28,6 +28,15 @@ start() {
 
  	echo -n $"Starting fetchmail: "
 
+	# Create log file if not exists:
+	if ! [ -e "${LOG_FILE}" ]; then
+	    touch ${LOG_FILE}
+	fi
+
+	# Fix log file permissions:
+	chown fetchmail:root ${LOG_FILE}
+	chmod 0640 ${LOG_FILE}
+
 	daemon --user $USER /usr/bin/fetchmail $SSL_OPTIONS --auth $AUTH_TYPE -L $LOG_FILE -f $CONFIG_FILE -d $INTERVAL $EXTRA_OPTIONS
 
 	RETVAL=$?

@@ -1,8 +1,11 @@
+#
+# 10base
+#
 {
 my $user = 'fetchmail';
 my $ssl = $fetchmail{'ssl'} || '';
 my $auth_type = $fetchmail{'authType'} || 'password';
-my $log_file = $fetchmail{'logFile'} || '/var/log/fetchmail.log';
+my $log_file = '/var/log/fetchmail.log';
 my $conf_file = $fetchmail{'config'} || '/home/fetchmail/fetchmailrc';
 my $interval =  $fetchmail{'externalFreq'} || '5'; 
 $interval = $interval * 60; # minutes to seconds

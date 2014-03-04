@@ -8,22 +8,36 @@
 # Source function library.
 . /etc/init.d/functions
 
+function print_fetchmail_conf()
+{
+    perl -Mesmith::templates -e 'print esmith::templates::processTemplate({TEMPLATE_PATH=>"fetchmailrc", OUTPUT_TYPE=>"string"});'
+}
+
 RETVAL=0
 
 start() {
 	[ -x /usr/bin/fetchmail ] || exit 5
 
-	# Source config
+	# Check if any account is active
+	if ! print_fetchmail_conf | grep -s ^poll &>/dev/null; then
+	    echo "No active fetchmail accounts. Exiting gracefully."
+	    exit 0
+	fi
+
+	# Default configuration
+	USER="fetchmail"
+	SSL_OPTIONS=""
+	AUTH_TYPE="password"
+	LOG_FILE="/var/log/fetchmail.log"
+	INTERVAL="600"
+	EXTRA_OPTIONS="--fastuidl 1"
+	FETCHMAILHOME="/var/run/fetchmail"
+
+	export FETCHMAILHOME
+
+	# Source local configuration
 	if [ -f /etc/sysconfig/fetchmail ] ; then
-		. /etc/sysconfig/fetchmail
-	else
-		USER="fetchmail"
-		SSL_OPTIONS=""
-		AUTH_TYPE="password"
-		LOG_FILE="/var/log/fetchmail.log"
-		CONFIG_FILE="/home/e-smith/fetchmailrc"
-		INTERVAL="1"
-		EXTRA_OPTIONS="--fastuidl 1"
+	    . /etc/sysconfig/fetchmail
 	fi
 
  	echo -n $"Starting fetchmail: "
@@ -37,7 +51,10 @@ start() {
 	chown fetchmail:root ${LOG_FILE}
 	chmod 0640 ${LOG_FILE}
 
-	daemon --user $USER /usr/bin/fetchmail $SSL_OPTIONS --auth $AUTH_TYPE -L $LOG_FILE -f $CONFIG_FILE -d $INTERVAL $EXTRA_OPTIONS
+	print_fetchmail_conf | \
+	    daemon --user $USER \
+	    /usr/bin/fetchmail $SSL_OPTIONS --auth $AUTH_TYPE \
+	    -L $LOG_FILE -f - -d $INTERVAL $EXTRA_OPTIONS
 
 	RETVAL=$?
 	echo
@@ -52,9 +69,6 @@ stop() {
 	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/fetchmail
 	return $RETVAL
 }
-rhstatus() {
-	status fetchmail
-}
 restart() {
 	stop
 	start
@@ -67,7 +81,7 @@ case "$1" in
   	stop
 	;;
   status)
-  	rhstatus
+  	status fetchmail
 	;;
   restart)
   	restart
@@ -82,19 +96,8 @@ case "$1" in
         echo
         exit $RETVAL
 	;;
-  adjust)
-	if [ `/sbin/e-smith/config getprop fetchmail status` == 'enabled' ]; then
-  		if [ -f /var/lock/subsys/fetchmail ]; then
-			restart || :
-		else
-			start || :
-		fi
-	else
-		[ -f /var/lock/subsys/fetchmail ] && stop || :
-	fi
-	;;
   *)
-	echo $"Usage: $0 {start|stop|status|restart|condrestart|adjust|sigusr1}"
+	echo $"Usage: $0 {start|stop|status|restart|condrestart|sigusr1}"
 	exit 2
 esac
 

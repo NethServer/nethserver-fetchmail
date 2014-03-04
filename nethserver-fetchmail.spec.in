@@ -15,7 +15,6 @@ Requires:	fetchmail
 %description
 Fetchmail add-on for NethServer
 
-
 %prep
 %setup
 
@@ -25,8 +24,10 @@ perl createlinks
 
 %install
 rm -rf $RPM_BUILD_ROOT
-(cd root ; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
-/sbin/e-smith/genfilelist --file '/usr/local/bin/fetchmail_wrapper' 'attr(0755,root,root)'  $RPM_BUILD_ROOT > %{name}-%{version}-filelist
+(cd root   ; find . -depth -not -name '*.orig' -print  | cpio -dump $RPM_BUILD_ROOT)
+%{genfilelist} $RPM_BUILD_ROOT \
+    --dir '/var/run/fetchmail' 'attr(0750,fetchmail,root)' \
+    > %{name}-%{version}-%{release}-filelist
 echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 
 %clean 
@@ -34,13 +35,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 # Add the "fetchmail" user
-getent group fetchmail >/dev/null || groupadd -r fetchmail
-getent passwd fetchmail >/dev/null || \
-useradd -r -g fetchmail -s /sbin/nologin \
-    -d /home/fetchmail -c "Fetchmail user" -m fetchmail
-exit 0
+if ! getent passwd fetchmail >/dev/null; then
+   useradd -r -N -s /sbin/nologin -c "Fetchmail user" fetchmail
+fi
 
-%files -f %{name}-%{version}-filelist
+%files -f %{name}-%{version}-%{release}-filelist
 %defattr(-,root,root)
 
 %changelog

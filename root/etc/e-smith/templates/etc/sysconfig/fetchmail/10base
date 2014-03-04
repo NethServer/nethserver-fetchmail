@@ -5,7 +5,6 @@
 my $user = 'fetchmail';
 my $ssl = $fetchmail{'ssl'} || '';
 my $auth_type = $fetchmail{'authType'} || 'password';
-my $log_file = '/var/log/fetchmail.log';
 my $interval =  $fetchmail{'externalFreq'} || '5'; 
 $interval = $interval * 60; # minutes to seconds
 my $extra_options = $fetchmail{'extraOptions'} || '--fastuidl 1';
@@ -15,7 +14,6 @@ $OUT.=<<HERE
 USER="$user"
 SSL_OPTIONS="$ssl"
 AUTH_TYPE="$auth_type"
-LOG_FILE="$log_file"
 INTERVAL="$interval"
 EXTRA_OPTIONS="$extra_options"
 HERE

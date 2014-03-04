@@ -28,7 +28,6 @@ start() {
 	USER="fetchmail"
 	SSL_OPTIONS=""
 	AUTH_TYPE="password"
-	LOG_FILE="/var/log/fetchmail.log"
 	INTERVAL="600"
 	EXTRA_OPTIONS="--fastuidl 1"
 	FETCHMAILHOME="/var/run/fetchmail"
@@ -42,19 +41,10 @@ start() {
 
  	echo -n $"Starting fetchmail: "
 
-	# Create log file if not exists:
-	if ! [ -e "${LOG_FILE}" ]; then
-	    touch ${LOG_FILE}
-	fi
-
-	# Fix log file permissions:
-	chown fetchmail:root ${LOG_FILE}
-	chmod 0640 ${LOG_FILE}
-
 	print_fetchmail_conf | \
 	    daemon --user $USER \
 	    /usr/bin/fetchmail $SSL_OPTIONS --auth $AUTH_TYPE \
-	    -L $LOG_FILE -f - -d $INTERVAL $EXTRA_OPTIONS
+	    --syslog -f - -d $INTERVAL $EXTRA_OPTIONS
 
 	RETVAL=$?
 	echo

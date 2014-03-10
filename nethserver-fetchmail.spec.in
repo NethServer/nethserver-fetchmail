@@ -43,6 +43,9 @@ fi
 %defattr(-,root,root)
 
 %changelog
+* Mon Mar 10 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.3-1.ns6
+- Warning after fetchmail installation - Bug #2677 [NethServer]
+
 * Wed Feb 05 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.2-1.ns6
 - Update all inline help documentation - Task #1780 [NethServer]
 

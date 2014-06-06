@@ -39,3 +39,10 @@ event_actions($event, 'initialize-default-databases' => '00');
 #--------------------------------------------------
 $event = "nethserver-fetchmail-save";
 event_services($event, 'fetchmail' => 'restart');
+
+#--------------------------------------------------
+# actions for migration-import event
+#--------------------------------------------------
+
+$event = "migration-import";
+event_actions($event, 'nethserver-fetchmail-migrate' => 70);

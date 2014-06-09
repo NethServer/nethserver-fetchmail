@@ -2,14 +2,16 @@
 
 if ($view->getModule()->getIdentifier() == 'update') {
     $headerText = 'update_header_label';
+    $mail = $view->textInput('mail',$view::STATE_READONLY);
 } else {
     $headerText = 'create_header_label';
+    $mail = $view->textInput('mail');
 }
 
 echo $view->header()->setAttribute('template',$T($headerText));
 
 echo $view->panel()
-    ->insert($view->textInput('mail'))
+    ->insert($mail)
     ->insert($view->selector('proto'))
     ->insert($view->textInput('popserver'))
     ->insert($view->textInput('username'))

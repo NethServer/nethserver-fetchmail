@@ -46,3 +46,17 @@ event_services($event, 'fetchmail' => 'restart');
 
 $event = "migration-import";
 event_actions($event, 'nethserver-fetchmail-migrate' => 70);
+
+#
+# Whenever mail addresses change, restart fetchmail:
+#
+event_services($_, qw(
+    fetchmail restart
+)) foreach(qw(
+    pseudonym-create 
+    pseudonym-modify  
+    pseudonym-delete 
+    domain-create
+    domain-delete
+    domain-modify    
+));

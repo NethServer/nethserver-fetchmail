@@ -4,6 +4,7 @@
     #
 
     use esmith::db;
+    use NethServer::MailServer;
 
     $OUT = '';
 
@@ -12,6 +13,8 @@
 
     my (undef, undef, $uid, $gid, undef, undef, undef, $dir, undef)
         = getpwnam("alias");
+
+    my $mailServer = NethServer::MailServer->new();
 
     # Create assignments for each fetchmail.
 
@@ -25,13 +28,21 @@
         my $password = db_get_prop(\%fetchmails, $_, "password");
         my $account = db_get_prop(\%fetchmails, $_, "account");
         my $proto = db_get_prop(\%fetchmails, $_, "proto") || 'pop3';
+
+	my @addressList = $mailServer->getAccountMailAddresses($account);
+
+	if( ! scalar @addressList ) {
+	    warn "[WARNING] no mail address defined for $account!\n";
+	    next;
+	}
+      
         $KEEP='';
         $SSL=''; if ($ssl eq 'YES') { $SSL='ssl';}
         if ($nokeep eq 'NO') {
                 $KEEP="keep";}
         if ($active eq 'YES') {
                 $OUT.="poll $popserver proto $proto:\n user \"$username\"";
-                $OUT.=" with pass \"$password\" is \"$account\@$DomainName\" here";
+                $OUT.=" with pass \"$password\" is \"$addressList[0]\" here";
                 $OUT.=" smtphost 127.0.0.100 $KEEP $SSL\n";
         }
     }

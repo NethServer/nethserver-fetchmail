@@ -43,6 +43,10 @@ fi
 %defattr(-,root,root)
 
 %changelog
+* Thu Jul 03 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.4-1.ns6
+- Delivers to non-existing email addresses - Bug #2766
+- Implement migration - Enhancement #2763
+
 * Thu Jun 12 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.4-1.ns6
 - Implement migration - Enhancement #2763
 

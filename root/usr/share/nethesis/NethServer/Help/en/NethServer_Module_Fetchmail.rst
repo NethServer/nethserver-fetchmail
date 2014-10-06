@@ -1,6 +1,6 @@
-========================
-External email addresses
-========================
+==============
+POP3 connector
+==============
 
 External email addresses are mailboxes that
 are checked at regular intervals using the **POP3** or **IMAP4** protocol.

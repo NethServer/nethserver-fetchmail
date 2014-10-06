@@ -1,6 +1,6 @@
-=======================
-Indirizzi email esterni
-=======================
+===============
+Connettore POP3
+===============
 
 Gli indirizzi email esterni sono caselle di posta elettronica che
 vengono controllate ad intervalli regolari tramite i protocolli **POP3**

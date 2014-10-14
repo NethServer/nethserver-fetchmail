@@ -8,8 +8,8 @@ Messages contained in the mailbox are downloaded and delivered to
 local users or groups, as per configuration in 
 this form.
 
-External addresses
-==================
+Accounts
+========
 
 Configure the list of external addresses and the association with the user of the system.
 

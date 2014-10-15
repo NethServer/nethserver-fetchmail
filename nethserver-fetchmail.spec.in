@@ -43,6 +43,9 @@ fi
 %defattr(-,root,root)
 
 %changelog
+* Wed Oct 15 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.5-1.ns6
+- Fetchmail: change UI label - Enhancement #2863
+
 * Thu Jul 03 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.4-1.ns6
 - Delivers to non-existing email addresses - Bug #2766
 - Implement migration - Enhancement #2763

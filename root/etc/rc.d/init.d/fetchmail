@@ -30,7 +30,8 @@ start() {
 	AUTH_TYPE="password"
 	INTERVAL="600"
 	EXTRA_OPTIONS="--fastuidl 1"
-	FETCHMAILHOME="/var/run/fetchmail"
+	PIDFILE="/var/run/fetchmail/fetchmail.pid"
+	FETCHMAILHOME="/var/lib/nethserver/fetchmail"
 
 	export FETCHMAILHOME
 
@@ -44,7 +45,7 @@ start() {
 	print_fetchmail_conf | \
 	    daemon --user $USER \
 	    /usr/bin/fetchmail $SSL_OPTIONS --auth $AUTH_TYPE \
-	    --syslog -f - -d $INTERVAL $EXTRA_OPTIONS
+	    --syslog -f - -d $INTERVAL --pidfile $PIDFILE $EXTRA_OPTIONS
 
 	RETVAL=$?
 	echo

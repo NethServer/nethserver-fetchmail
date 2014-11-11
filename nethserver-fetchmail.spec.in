@@ -1,3 +1,5 @@
+%define fetchmail_home /var/lib/nethserver/fetchmail
+
 Name:		nethserver-fetchmail
 Version:        @@VERSION@@
 Release:        @@RELEASE@@
@@ -27,6 +29,7 @@ rm -rf $RPM_BUILD_ROOT
 (cd root   ; find . -depth -not -name '*.orig' -print  | cpio -dump $RPM_BUILD_ROOT)
 %{genfilelist} $RPM_BUILD_ROOT \
     --dir '/var/run/fetchmail' 'attr(0750,fetchmail,root)' \
+    --dir '%{fetchmail_home}' 'attr(0750,fetchmail,fetchmail)' \
     > %{name}-%{version}-%{release}-filelist
 echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 
@@ -34,9 +37,20 @@ echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-# Add the "fetchmail" user
 if ! getent passwd fetchmail >/dev/null; then
-   useradd -r -N -s /sbin/nologin -c "Fetchmail user" fetchmail
+   # Add the "fetchmail" user
+   useradd -r -U -s /sbin/nologin -d %{fetchmail_home} -c "Fetchmail user" fetchmail
+
+elif ! [ -d %{fetchmail_home} ]; then
+   # Stop any running instance:
+   service fetchmail status && service fetchmail stop
+   # Create the primary group, if not exists:
+   groupadd -f -g `id -u fetchmail` -r fetchmail
+   # Fix the home dir path and move the existing DB to the new path:
+   usermod -m -d %{fetchmail_home} -g fetchmail fetchmail
+   mkdir -m 0750 %{fetchmail_home}
+   mv -n /var/run/fetchmail/.fetchids %{fetchmail_home}/.fetchids || :
+   chown -Rc fetchmail.fetchmail %{fetchmail_home}
 fi
 
 %files -f %{name}-%{version}-%{release}-filelist

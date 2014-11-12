@@ -43,15 +43,17 @@ if ! getent passwd fetchmail >/dev/null; then
 
 elif ! [ -d %{fetchmail_home} ]; then
    # Stop any running instance:
-   service fetchmail status && service fetchmail stop
+   service fetchmail status &>/dev/null && service fetchmail stop
    # Create the primary group, if not exists:
    groupadd -f -g `id -u fetchmail` -r fetchmail
    # Fix the home dir path and move the existing DB to the new path:
    usermod -m -d %{fetchmail_home} -g fetchmail fetchmail
    mkdir -m 0750 %{fetchmail_home}
-   mv -n /var/run/fetchmail/.fetchids %{fetchmail_home}/.fetchids || :
-   chown -Rc fetchmail.fetchmail %{fetchmail_home}
+   mv -n /var/run/fetchmail/.fetchids %{fetchmail_home}/.fetchids &>/dev/null
+   chown -Rf fetchmail.fetchmail %{fetchmail_home}
 fi
+
+exit 0
 
 %files -f %{name}-%{version}-%{release}-filelist
 %defattr(-,root,root)

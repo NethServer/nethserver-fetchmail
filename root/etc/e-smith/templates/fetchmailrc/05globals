@@ -1,0 +1,10 @@
+#
+# 05globals
+#
+set postmaster "postmaster@localhost"
+
+# bounce to postmasters
+set no bouncemail
+
+# spam bounces to postmaster
+# set spambounce

@@ -1,0 +1,12 @@
+#
+# 65fetchmail -- proxy to dovecot/lmtp socket
+#
+push(@inet_acl, '127.0.0.100');
+push(@listen_sockets, '127.0.0.100:10024');
+$interface_policy\{'127.0.0.100:10024'\} = 'FETCHMAIL';
+$policy_bank\{'FETCHMAIL'\} = \{
+    forward_method => 'lmtp:/var/run/dovecot/lmtp',
+\};
+
+
+

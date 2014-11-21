@@ -1,0 +1,83 @@
+#!/usr/bin/perl
+
+#
+# Copyright (C) 2014 Nethesis S.r.l.
+# http://www.nethesis.it - support@nethesis.it
+#
+# This script is part of NethServer.
+#
+# NethServer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License,
+# or any later version.
+#
+# NethServer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NethServer.  If not, see .
+#
+
+use strict;
+
+use JSON;
+use User::pwent;
+
+use esmith::AccountsDB;
+
+my $adb = esmith::AccountsDB->open_ro() || die("Could not open Accounts DB");
+
+my %users = ();
+my %groups = ();
+
+my %types = ();
+my %accounts = ();
+
+
+open(DOVEUSERS, '/usr/bin/timeout -s KILL 15s /usr/bin/doveadm user \* |');
+
+my $key;
+
+while($key = <DOVEUSERS>) {
+    chomp($key);
+
+    if( ! exists $types{$key}) {
+	my $t = $adb->get_prop($key, 'type');
+	if($t eq 'group'
+	   && $adb->get_prop($key, 'MailDeliveryType') ne 'shared') {
+	    next;
+	} elsif($t eq 'user'
+	   && $adb->get_prop($key, 'MailStatus') ne 'enabled') {
+	    next;
+	}
+	$types{$key} = $t || 'user';
+    }
+
+    if( ! exists $accounts{$key}) {
+	my $gecos = join(' ', $adb->get_prop($key, 'FirstName'), $adb->get_prop($key, 'LastName'));
+	$gecos =~ s/(^ | $)//;
+
+	if( ! $gecos) {
+	    my $ue = getpwnam($key);
+	    $gecos = $ue ? $ue->gecos : undef;
+	}
+
+	if(lc($gecos) ne lc($key)) {
+	    $gecos .= sprintf(' (%s)', $key);
+	}
+
+	$accounts{$key} = $gecos;
+    }
+}
+
+
+
+print JSON->new->encode({
+    'users' => {map { $types{$_} eq 'user' ? ($_ => $accounts{$_}) : () } keys %types },
+    'groups' => {map { $types{$_} eq 'group' ? ($_ => $accounts{$_}) : () } keys %types}
+});
+
+close(DOVEUSERS);
+exit($?);

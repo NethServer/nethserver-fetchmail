@@ -82,15 +82,42 @@ class Modify extends \Nethgui\Controller\Table\Modify
             'delete' => 'Nethgui\Template\Table\Delete',
         );
         $view->setTemplate($templates[$this->getIdentifier()]);
-        
-        $view['accountDatasource'] = new \NethServer\Module\Pseudonym\AccountDatasource($this, $view->getTranslator(), $view['Account']);
+
         $ynds = array(array('YES',$view->translate('YES_label')),array('NO',$view->translate('NO_label')));
         $view['nokeepDatasource'] = $ynds;
         $view['sslDatasource'] = $ynds;
         $view['protoDatasource'] = array(array('pop3',$view->translate('pop3_label')),array('imap',$view->translate('imap_label')));
- 
+
+        if($this->getRequest()->isValidated()) {
+            $view['accountDatasource'] = $this->getAccounts($view);
+        }
     }
 
+    private function getAccounts(\Nethgui\View\ViewInterface $view)
+    {
+        static $ds;
+
+        if(isset($ds)) {
+            return $ds;
+        }
+
+        $data = json_decode($this->getPlatform()->exec("/usr/bin/sudo /usr/libexec/nethserver/read-mail-accounts")->getOutput(), TRUE);
+
+        $users = \Nethgui\Widget\XhtmlWidget::hashToDatasource($data['users'], TRUE);
+        $groups = \Nethgui\Widget\XhtmlWidget::hashToDatasource($data['groups'], TRUE);
+
+        $ds = array();
+
+        if ($users) {
+            $ds[] = array($users, $view->translate('Users_label'));
+        }
+
+        if ($groups) {
+            $ds[] = array($groups, $view->translate('Groups_label'));
+        }
+
+        return $ds;
+    }
 
     /**
      * Delete the record after the event has been successfully completed
@@ -103,7 +130,7 @@ class Modify extends \Nethgui\Controller\Table\Modify
 
     protected function onParametersSaved($changedParameters)
     {
-        $this->getPlatform()->signalEvent('nethserver-fetchmail-save@post-process');
+        $this->getPlatform()->signalEvent('nethserver-fetchmail-save');
     }
 
 }

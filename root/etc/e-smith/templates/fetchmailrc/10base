@@ -9,7 +9,7 @@
     my %fetchmails;
     tie %fetchmails, 'esmith::config', "/var/lib/nethserver/db/fetchmail";
 
-    open(DOVEUSERS, '/usr/bin/timeout -s KILL 5s /usr/bin/doveadm user \* |');
+    open(DOVEUSERS, '/usr/bin/timeout -s KILL 10s /usr/bin/doveadm user \* |');
     my @doveusers = ();
     while(<DOVEUSERS>) {
 	chomp;

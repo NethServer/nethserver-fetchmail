@@ -1,0 +1,10 @@
+{
+    #
+    # 00template_vars
+    #
+
+    # Default local amavisd FETCHMAIL listener
+    $smtphost = "127.0.0.100/10024";
+
+    '';
+}

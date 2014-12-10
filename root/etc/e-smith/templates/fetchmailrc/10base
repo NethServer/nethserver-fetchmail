@@ -9,11 +9,15 @@
     my %fetchmails;
     tie %fetchmails, 'esmith::config', "/var/lib/nethserver/db/fetchmail";
 
-    my (undef, undef, $uid, $gid, undef, undef, undef, $dir, undef)
-        = getpwnam("alias");
+    open(DOVEUSERS, '/usr/bin/timeout -s KILL 5s /usr/bin/doveadm user \* |');
+    my @doveusers = ();
+    while(<DOVEUSERS>) {
+	chomp;
+	push @doveusers, $_;
+    }
+    close(DOVEUSERS);
 
     # Create assignments for each fetchmail.
-
     foreach (db_get(\%fetchmails))
     {
         my $active = db_get_prop(\%fetchmails, $_, "active") || 'YES';
@@ -25,16 +29,22 @@
         my $account = db_get_prop(\%fetchmails, $_, "account");
         my $proto = db_get_prop(\%fetchmails, $_, "proto") || 'pop3';
       
-        $KEEP='';
-        $SSL=''; if ($ssl eq 'YES') { $SSL='ssl';}
-        if ($nokeep eq 'NO') {
-                $KEEP="keep";
-	}
-        if ($active eq 'YES') {
+	if( ! grep { $_ eq $account } @doveusers ) {
+	    warn "[WARNING] non available account `$account` has been skipped! Check your configuration.\n";
+
+        } elsif ($active eq 'YES') {
                 $OUT.="poll $popserver proto $proto:\n user \"$username\"";
                 $OUT .= sprintf(' with pass "%s" is "%s@localhost" here', $password, $account);
-                $OUT.=" smtphost 127.0.0.100/10024\n";
-                $OUT.=" antispam 554 $KEEP $SSL\n";
+                $OUT.=" smtphost $smtphost\n";
+                $OUT.=" antispam -1";
+
+		if ($ssl eq 'YES') {
+		    $OUT .= ' ssl';
+		}
+		if ($nokeep eq 'NO') {
+		    $OUT .= ' keep';
+		}
+		$OUT .= "\n";
         }
     }
 }

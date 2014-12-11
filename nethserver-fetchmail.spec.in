@@ -59,6 +59,9 @@ exit 0
 %defattr(-,root,root)
 
 %changelog
+* Thu Dec 11 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.1-1.ns6
+- New fixes for - Enhancement #2954 [NethServer]
+
 * Tue Dec 09 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.0-1.ns6
 - Fetchmail re-download all emails after reboot - Bug #2947 [NethServer]
 - Fetchmail support for AD users - Enhancement #2924 [NethServer]

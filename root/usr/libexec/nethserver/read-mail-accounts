@@ -46,7 +46,7 @@ while($key = <DOVEUSERS>) {
     if( ! exists $types{$key}) {
 	my $t = $adb->get_prop($key, 'type');
 	if($t eq 'group'
-	   && $adb->get_prop($key, 'MailDeliveryType') ne 'shared') {
+	   && $adb->get_prop($key, 'MailStatus') ne 'enabled') {
 	    next;
 	} elsif($t eq 'user'
 	   && $adb->get_prop($key, 'MailStatus') ne 'enabled') {

@@ -38,6 +38,9 @@ event_actions($event, 'initialize-default-databases' => '00');
 # actions for nethserver-fetchmail-save event
 #--------------------------------------------------
 $event = "nethserver-fetchmail-save";
+event_templates($event, qw(
+  /etc/sysconfig/fetchmail
+));
 event_services($event, 'fetchmail' => 'restart');
 
 #--------------------------------------------------

@@ -45,7 +45,7 @@ class General extends \Nethgui\Controller\AbstractController
 
         $view['statusDatasource'] = array(array('enabled',$view->translate('enabled_label')),array('disabled',$view->translate('disabled_label')));
         $view['externalFreqDatasource'] =  array_map(function($fmt) use ($view) {
-            return array($fmt, $view->translate($fmt . '_label'));
+                return array((String) $fmt, $view->translate($fmt . '_label'));
         }, array(5, 10, 15, 30, 60));
 
     }

@@ -1,8 +1,8 @@
 %define fetchmail_home /var/lib/nethserver/fetchmail
 
 Name:		nethserver-fetchmail
-Version:        1.1.1
-Release:        2%{?dist}
+Version: 1.1.2
+Release: 1%{?dist}
 Summary:	NethServer fetchmail
 Group:		Networking/Daemons
 License:	GPLv2
@@ -59,6 +59,9 @@ exit 0
 %defattr(-,root,root)
 
 %changelog
+* Mon Jun 22 2015 Davide Principi <davide.principi@nethesis.it> - 1.1.2-1
+- Cannot change POP3 connector  poll interval - Bug #3134 [NethServer]
+
 * Fri Dec 12 2014 Davide Principi <davide.principi@nethesis.it> - 1.1.1-2.ns6
 - Route message to postfix, for alias expansion. Refs #2978
 - Fix shown groups in POP3 connector page

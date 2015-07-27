@@ -32,6 +32,11 @@ class Accounts extends \Nethgui\Controller\TableController
 
         $columns = array(
             'Key',
+	    'username',
+            'ssl',
+            'proto',
+            'nokeep',
+            'active',
             'Actions'
         );
 
@@ -48,6 +53,23 @@ class Accounts extends \Nethgui\Controller\TableController
         ;
 
         parent::initialize();
+    }
+
+    public function prepareViewForColumnActive(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)
+    {
+        return $view->translate($values['active']."_label");
+    }
+
+
+    public function prepareViewForColumnSsl(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)
+    {
+        return $view->translate($values['ssl']."_label");
+
+    }
+
+    public function prepareViewForColumnNoKeep(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)
+    {
+        return $view->translate($values['nokeep']."_label");
     }
 
     public function prepareViewForColumnKey(\Nethgui\Controller\Table\Read $action, \Nethgui\View\ViewInterface $view, $key, $values, &$rowMetadata)

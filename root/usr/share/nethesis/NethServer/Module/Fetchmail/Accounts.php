@@ -32,7 +32,7 @@ class Accounts extends \Nethgui\Controller\TableController
 
         $columns = array(
             'Key',
-	    'username',
+	    'account',
             'ssl',
             'proto',
             'nokeep',

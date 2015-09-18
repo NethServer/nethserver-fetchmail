@@ -1,7 +1,7 @@
 %define fetchmail_home /var/lib/nethserver/fetchmail
 
 Name:		nethserver-fetchmail
-Version: 1.1.3
+Version: 1.1.4
 Release: 1%{?dist}
 Summary:	NethServer fetchmail
 Group:		Networking/Daemons
@@ -59,6 +59,9 @@ exit 0
 %defattr(-,root,root)
 
 %changelog
+* Fri Sep 18 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.4-1
+- Wrong column in Pop3 Connector view table - Bug #3259
+
 * Tue Jul 28 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.3-1
 - Fetchmail: Add new column in Pop3 Connector view table - Enhancement #3231 [NethServer]
 

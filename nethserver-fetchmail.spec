@@ -6,9 +6,9 @@ Release: 1%{?dist}
 Summary:	NethServer fetchmail
 Group:		Networking/Daemons
 License:	GPLv2
-URL:		http://www.nethesis.it
 Source0:	%{name}-%{version}.tar.gz
 BuildArch: 	noarch
+URL: %{url_prefix}/%{name} 
 
 BuildRequires:	nethserver-devtools
 Requires:	nethserver-mail-server > 1.8.2-1
@@ -25,16 +25,15 @@ Fetchmail add-on for NethServer
 perl createlinks
 
 %install
-rm -rf $RPM_BUILD_ROOT
-(cd root   ; find . -depth -not -name '*.orig' -print  | cpio -dump $RPM_BUILD_ROOT)
-%{genfilelist} $RPM_BUILD_ROOT \
+rm -rf %{buildroot}
+(cd root   ; find . -depth -not -name '*.orig' -print  | cpio -dump %{buildroot})
+%{genfilelist} %{buildroot} \
     --dir '/var/run/fetchmail' 'attr(0750,fetchmail,root)' \
     --dir '%{fetchmail_home}' 'attr(0750,fetchmail,fetchmail)' \
     > %{name}-%{version}-%{release}-filelist
-echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 
 %clean 
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %pre
 if ! getent passwd fetchmail >/dev/null; then
@@ -57,6 +56,8 @@ exit 0
 
 %files -f %{name}-%{version}-%{release}-filelist
 %defattr(-,root,root)
+%dir %{_nseventsdir}/%{name}-update
+%doc COPYING
 
 %changelog
 * Tue Sep 29 2015 Davide Principi <davide.principi@nethesis.it> - 1.1.5-1

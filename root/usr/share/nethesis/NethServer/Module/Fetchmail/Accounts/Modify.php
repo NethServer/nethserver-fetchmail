@@ -38,7 +38,7 @@ class Modify extends \Nethgui\Controller\Table\Modify
         $ynv = $this->createValidator()->memberOf(array('YES','NO'));
         $parameterSchema = array(
             array('mail', Validate::EMAIL, \Nethgui\Controller\Table\Modify::KEY),
-            array('account', Validate::USERNAME, \Nethgui\Controller\Table\Modify::FIELD),
+            array('account', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
             array('nokeep', $ynv, \Nethgui\Controller\Table\Modify::FIELD),
             array('password', Validate::ANYTHING, \Nethgui\Controller\Table\Modify::FIELD),
             array('popserver', Validate::HOSTADDRESS, \Nethgui\Controller\Table\Modify::FIELD),

@@ -1,7 +1,7 @@
 %define fetchmail_home /var/lib/nethserver/fetchmail
 
 Name:		nethserver-fetchmail
-Version: 1.1.5
+Version: 1.1.6
 Release: 1%{?dist}
 Summary:	NethServer fetchmail
 Group:		Networking/Daemons
@@ -59,6 +59,9 @@ exit 0
 %defattr(-,root,root)
 
 %changelog
+* Fri May 20 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.6-1
+- fetchmail delivery to AD users with capitalized names - Bug #3369 [NethServer]
+
 * Tue Sep 29 2015 Davide Principi <davide.principi@nethesis.it> - 1.1.5-1
 - Make Italian language pack optional - Enhancement #3265 [NethServer]
 

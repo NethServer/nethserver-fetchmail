@@ -15,7 +15,7 @@ echo $view->panel()
     ->insert($view->selector('proto'))
     ->insert($view->textInput('popserver'))
     ->insert($view->textInput('username'))
-    ->insert($view->textInput('password'))
+    ->insert($view->textInput('password', $view::TEXTINPUT_PASSWORD))
     ->insert($view->selector('account',  $view::SELECTOR_DROPDOWN))
     ->insert($view->selector('ssl'))
     ->insert($view->selector('nokeep'));
